@@ -1,0 +1,28 @@
+version: "3.9"
+
+name: "skipper"
+
+services:
+    caddy:
+        image: caddy:latest
+        restart: unless-stopped
+        healthcheck:
+            disable: true
+        ports:
+            - 80:80     # Needed for the ACME HTTP-01 challenge.
+            - 443:443
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile:ro
+            - ./config:/config
+            - ./data:/data
+        networks:
+            - network
+
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - 1025:1025
+            - 8025:8025
+networks:
+    network:
+        driver: bridge
