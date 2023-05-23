@@ -37,6 +37,7 @@ class SailCmd extends BaseCommand
             ...$this->project->definitionList()
         );
 
+        $this->io->writeln('<comment>Performing docker compose validity checks</comment>');
         $result = $this->checkComposeFile();
 
         if (!$result) {
@@ -45,6 +46,8 @@ class SailCmd extends BaseCommand
             if (!$confirm) {
                 return Command::SUCCESS;
             }
+        } else {
+            $this->io->newLine();
         }
 
         $shouldBuild = $this->input->getOption('build');
@@ -67,7 +70,7 @@ class SailCmd extends BaseCommand
 
         if (!HostFile::for($this->project->host)->check()) {
             $this->io->writeln([
-                "Host {$this->project->host} is not registered inside your /etc/hosts file.",
+                "❕ Host {$this->project->host} is not registered inside your /etc/hosts file.",
                 "Use command <info>skipper host {$this->project->host}</info>",
             ]);
 
@@ -75,7 +78,7 @@ class SailCmd extends BaseCommand
         }
 
         $this->io->writeln([
-            "<comment>{$this->project->name}</comment> is up and running at <info>https://{$this->project->host}</info>",
+            "🚀 <comment>{$this->project->name}</comment> is up and running at <info>https://{$this->project->host}</info> 🚀",
         ]);
 
         return Command::SUCCESS;

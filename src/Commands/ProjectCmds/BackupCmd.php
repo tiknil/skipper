@@ -129,13 +129,18 @@ class BackupCmd extends BaseCommand
         fclose($fileStream);
 
         if ($dumpResult === Command::SUCCESS) {
-            $this->io->success("Backup $outputFile created successfully");
+            $this->io->writeln('✅ <info>Backup created successfully</info>');
+            $this->io->writeln("📦 $outputFile");
         }
 
         $uncompressedFile = rtrim($outputFile, '.gz');
 
+        $this->io->newLine();
         $this->io->writeln(['You can uncompress it using']);
-        $this->io->writeln("<fg=green>gunzip < $outputFile > $uncompressedFile</>");
+        $this->io->writeln("<comment>gunzip < $outputFile > $uncompressedFile</comment>");
+
+        $this->io->newLine();
+        $this->io->writeln("Use <info>skipper restore --file $outputFile</info> to restore");
 
         return $dumpResult;
 

@@ -27,17 +27,19 @@ class DockerBase
     public function performInstall()
     {
         $filePath = "$this->path/$this->folder";
-        $this->io->writeln(["Installing base docker configuration into <info>{$this->folder}/</info>"]);
+        $this->io->writeln(["🚧 Installing base docker configuration into <info>{$this->folder}/</info>"]);
 
         if (file_exists($filePath.'/')) {
 
-            $this->io->note(["Folder {$this->folder} already exists.", 'All its content will be deleted and replaced']);
+            $this->io->warning(["Folder {$this->folder} already exists.", 'All its content will be deleted and replaced']);
 
             if ($this->io->confirm('Proceed anyway?')) {
 
                 Execute::onOutput(['rm', '-r', $filePath]);
             } else {
                 $this->io->writeln('Operation canceled. The base docker configuration will <info>not</info> be installed');
+
+                return;
             }
         }
 

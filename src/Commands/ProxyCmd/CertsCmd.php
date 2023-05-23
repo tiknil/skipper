@@ -14,12 +14,14 @@ class CertsCmd extends BaseCommand
     {
         $caddy = $this->configRepo->caddy;
 
-        $this->io->writeln('The proxy (Caddy) creates a local root certificate to sign its https certificates');
+        $this->io->writeln('📝 The proxy (Caddy) creates a local root certificate to sign its https certificates');
         $this->io->writeln("The OS normally doesn't trust this root certificate, but we can install it on our system");
+
+        $this->io->newLine();
 
         $uid = posix_getuid();
 
-        $this->io->writeln('Looking for root certificate in <info>'.$caddy->certPath().'</info>');
+        $this->io->writeln('🧐 Looking for root certificate in <info>'.$caddy->certPath().'</info>');
 
         if (!file_exists($caddy->certPath())) {
             $this->io->note([
@@ -35,7 +37,7 @@ class CertsCmd extends BaseCommand
 
         $cmd = [];
 
-        $this->io->writeln('<info>Mac OS X will prompt for your Touch ID or password</info>');
+        $this->io->writeln('🔐 <info>Mac OS X will prompt for your Touch ID or password</info>');
 
         if ($uid !== 0) {
             $cmd[] = 'sudo';
@@ -51,10 +53,10 @@ class CertsCmd extends BaseCommand
         $result = Execute::onShell($cmd);
 
         if ($result === Command::SUCCESS) {
-            $this->io->success('Cert installed correctly');
+            $this->io->success('✅ Cert installed correctly');
 
             $this->io->writeln([
-                'The browser may need some time to refresh its cache and recognize the certificate as valid',
+                '⏳ The browser may need some time to refresh its cache and recognize the certificate as valid',
             ]);
         }
 

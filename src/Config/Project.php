@@ -84,7 +84,7 @@ class Project
             return $this->envFile;
         }
 
-        if (rtrim(getcwd(), '/') === rtrim($this->envFile, '/')) {
+        if (rtrim(getcwd(), '/') === rtrim($this->path, '/')) {
             return $this->envFile;
         }
 

@@ -100,8 +100,9 @@ class RestoreCmd extends BaseCommand
             mkdir(dirname($file), 0777, true);
         }
 
-        $this->io->warning('Restoring the DB is a risky operation. You may lose your data');
-        $this->io->text('Input file: '.$file);
+        $this->io->writeln('<comment>⚠️  Restoring the DB is a risky operation. You may lose your data ⚠️</comment>');
+        $this->io->newLine();
+        $this->io->writeln("Input file: <comment>$file</comment>");
 
         $confirm = $this->io->confirm('Proceed anyway?');
 
@@ -144,7 +145,7 @@ class RestoreCmd extends BaseCommand
             $sqlStream->close();
 
             $result = $process->wait();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->io->error($e->getMessage());
 
             $gunResult = Command::FAILURE;
@@ -152,7 +153,7 @@ class RestoreCmd extends BaseCommand
         }
 
         if ($gunResult === Command::SUCCESS && $result === Command::SUCCESS) {
-            $this->io->success("Backup $file restored successfully");
+            $this->io->success("✅ Backup $file restored successfully");
         } else {
             $this->io->error('An error occurred');
 

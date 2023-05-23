@@ -137,8 +137,8 @@ class InitCmd extends BaseCommand
 
         $this->io->success("$name has been created successfully.");
 
-        $this->io->writeln('Use command <info>sail</info> to start the project containers');
-        $this->io->writeln('Use command <info>check</info> to validate your project compose file');
+        $this->io->writeln('⛵️ Use command <info>skipper sail</info> to start the project containers');
+        $this->io->writeln('✓ Use command <info>skipper check</info> to validate your project compose file');
 
         return Command::SUCCESS;
     }
@@ -185,6 +185,9 @@ class InitCmd extends BaseCommand
 
         if ($dockerBase) {
             DockerBase::install(getcwd(), 'docker');
+
+            $this->io->writeln('<info>Resuming the skipper init operation</info>');
+            $this->io->newLine();
         }
     }
 

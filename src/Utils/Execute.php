@@ -56,6 +56,6 @@ class Execute
 
     public static function logCmd(array $cmd): void
     {
-        Globals::$output->writeln('<fg=gray> >>> '.implode(' ', $cmd)."</>\n");
+        Globals::$output->writeln('<fg=gray> 💻  '.implode(' ', $cmd)."</>\n");
     }
 }

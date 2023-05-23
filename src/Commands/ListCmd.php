@@ -10,7 +10,7 @@ class ListCmd extends BaseCommand
 {
     protected function handle(): int
     {
-        $data = array_map(fn ($p) => [$p->isRunning() ? 'Yes' : 'No', $p->name, $p->host, $p->path], $this->configRepo->config->projects);
+        $data = array_map(fn ($p) => [$p->isRunning() ? '🟢' : '🔴', $p->name, $p->host, $p->path], $this->configRepo->config->projects);
 
         $this->io->table(['Running', 'Name', 'Host', 'Path'], $data);
 

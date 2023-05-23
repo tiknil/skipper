@@ -23,8 +23,8 @@ class DockCmd extends BaseCommand
         $result = Execute::onShell($cmd);
 
         if ($result === Command::SUCCESS) {
-            $this->io->writeln('Use command <info>caddy stop</info> to stop the reverse proxy');
-            $this->io->writeln('Use command <info>shutdown</info> to stop all running projects and the reverse proxy');
+            $this->io->writeln('⏹️  Use command <info>skipper caddy stop</info> to stop the reverse proxy');
+            $this->io->writeln('🔌 Use command <info>skipper shutdown</info> to stop all running projects and the reverse proxy');
         }
 
         return $result;

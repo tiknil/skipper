@@ -14,9 +14,7 @@ class ManCmd extends BaseCommand
     {
         $app = $this->getApplication();
 
-        $all = $app->all();
-
-        $this->io->writeln("{$app->getName()} <info>{$app->getVersion()}</info>");
+        $this->io->writeln("{$app->getName()}<info>{$app->getVersion()}</info>");
         $this->io->newLine();
 
         $this->io->writeln('<comment>Usage</comment>');
@@ -25,8 +23,7 @@ class ManCmd extends BaseCommand
 
         $this->io->newLine();
 
-        $this->io->writeln('<comment>Default options</comment>');
-        $this->io->writeln('Available for all commands');
+        $this->io->writeln('<comment>Default options</comment> Available for all commands');
         $this->io->definitionList(
             ['-h, --help' => 'Display help for the given command'],
             ['-q, --quiet' => 'Do not output any message'],
@@ -38,13 +35,13 @@ class ManCmd extends BaseCommand
 
         $this->io->writeln(' <comment>Proxy</comment>');
         $this->io->definitionList(
-            ['proxy:certs' => ' Install proxy local root certificate'],
+            ['proxy:certs' => 'Install proxy local root certificate'],
             ['proxy:up' => 'Launch the proxy docker compose instance'],
             ['proxy:down' => 'Stop the proxy docker compose instance'],
             ['proxy:restart' => 'Restart the proxy container instance'],
             ['proxy:show' => 'Print the current Caddyfile configuration'],
             ['proxy:config' => 'Regenerate the proxy configuration file'],
-            ['proxy:update' => ' Update the proxy deployment after a skipper upgrade'],
+            ['proxy:update' => 'Update the proxy deployment after a skipper upgrade'],
         );
 
         $this->io->writeln(' <comment>Helpers</comment>');
@@ -78,8 +75,8 @@ class ManCmd extends BaseCommand
             ['restore' => 'Restore a MySQL backup'],
         );
 
-        $this->io->writeln('Refer to https://github.com/tiknil/skipper for additional documentation');
-        $this->io->writeln('Use <info>skipper help [command]</info> or <info>skipper [command] --help</info> for details about a specific command');
+        $this->io->writeln('📖 Refer to <comment>https://github.com/tiknil/skipper</comment> for additional documentation');
+        $this->io->writeln('❔ Use <info>skipper help [command]</info> or <info>skipper [command] --help</info> for details about a specific command');
 
         return Command::SUCCESS;
     }

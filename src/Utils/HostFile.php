@@ -28,7 +28,7 @@ class HostFile
     public function requestAdd(): void
     {
         if (!$this->add()) {
-            $this->io->writeln('You can add the record manually to your /etc/hosts'.
+            $this->io->writeln('📝 You can add the record manually to your /etc/hosts '.
                 "file or try again with command <info>skipper host $this->host --ip $this->ip</info>"
             );
         }
@@ -36,14 +36,15 @@ class HostFile
 
     public function add(): bool
     {
-        $this->io->writeln("Mapping <comment>$this->host</comment> to <comment>$this->ip</comment>");
+        $this->io->writeln("🔀 Mapping <comment>$this->host</comment> to <comment>$this->ip</comment>");
 
         $lines = $this->readFile();
 
         $hostLine = $this->findHostLine($lines);
 
         if ($hostLine !== null) {
-            $this->io->writeln("$this->host already found on your hosts file at line $hostLine:");
+            $this->io->newLine();
+            $this->io->writeln("🧐 $this->host already found on your hosts file at line $hostLine:");
             $this->io->newLine();
             $this->io->writeln($lines[$hostLine]);
 
@@ -70,7 +71,7 @@ class HostFile
             return false;
         } else {
 
-            $this->io->writeln("<comment>$this->host</comment> mapped successfully to <comment>$this->ip</comment>");
+            $this->io->writeln("✅ <comment>$this->host</comment> mapped successfully to <comment>$this->ip</comment>");
 
         }
 
@@ -154,7 +155,7 @@ class HostFile
     private function writeFile(array $lines): int
     {
         $this->io->writeln('We need <info>sudo</info> permissions to create a backup copy of your hosts file and to remove the host');
-        $this->io->writeln('You may be prompted for your password');
+        $this->io->writeln('🔐 You may be prompted for your password');
 
         if (Execute::onShell(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {
             $this->io->error('Error creating hosts backup file.');
@@ -162,7 +163,7 @@ class HostFile
             return false;
         }
 
-        $this->io->writeln('Backup file <comment>/etc/hosts.bkp</comment> created successfully');
+        $this->io->writeln('📦 Backup file <comment>/etc/hosts.bkp</comment> created successfully');
 
         $inputStream = new InputStream();
 

@@ -14,11 +14,6 @@ class RmCmd extends BaseCommand
 {
     use WithProject;
 
-    protected function prepare()
-    {
-        $this->io->infoText('Removing the skipper project');
-    }
-
     protected function handle(): int
     {
         Execute::onShell($this->project->composeCommand('down'));

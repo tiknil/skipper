@@ -4,7 +4,7 @@ namespace Tiknil\Skipper;
 
 $version = \Composer\InstalledVersions::getPrettyVersion('tiknil/skipper');
 
-$app = new CliApplication('Tiknil Skipper', $version ?? 'dev');
+$app = new CliApplication('Tiknil Skipper ⛵️', $version ?? 'dev');
 
 $app->registerCommands();
 

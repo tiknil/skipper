@@ -36,15 +36,19 @@ trait WithProject
 
     protected function checkComposeFile(): bool
     {
+        $this->io->write('<fg=gray>Checking docker-compose file presence...</>');
         if (!file_exists($this->project->composeFilePath())) {
             $this->io->warning('Compose file not found at path '.$this->project->composeFilePath());
 
             return false;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
         $warnings = 0;
 
         // Load file
+        $this->io->writeln('<fg=gray>Loading docker-compose file</>');
         try {
             $data = Yaml::parseFile($this->project->composeFilePath());
         } catch (\Exception $e) {
@@ -53,6 +57,8 @@ trait WithProject
 
             return false;
         }
+
+        $this->io->write('<fg=gray>Checking network configuration...</>');
 
         $network = $data['networks'][$this->configRepo->config->network] ?? [];
         if (
@@ -75,10 +81,13 @@ EOD
             );
 
             $warnings++;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
         $services = $data['services'] ?? [];
 
+        $this->io->write('<fg=gray>Checking http container...</>');
         if (!isset($services[$this->project->httpContainer])) {
             $this->io->warning([
                 "{$this->project->httpContainer} container is missing from your compose file",
@@ -86,10 +95,13 @@ EOD
             ]);
 
             $warnings++;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
         $nginxNetworks = $services[$this->project->httpContainer]['networks'] ?? [];
 
+        $this->io->write('<fg=gray>Checking http networks...</>');
         if (!empty(array_diff(['default', $this->configRepo->config->network], $nginxNetworks))) {
             $this->io->warning([
                 "{$this->project->httpContainer} container should be attached to two networks",
@@ -97,8 +109,11 @@ EOD
             ]);
 
             $warnings++;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
+        $this->io->write('<fg=gray>Checking php container...</>');
         if (!isset($services[$this->project->phpContainer])) {
             $this->io->warning([
                 "{$this->project->phpContainer} container is missing from your compose file",
@@ -106,10 +121,13 @@ EOD
             ]);
 
             $warnings++;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
         $override = rtrim(dirname($this->project->composeFilePath()), '/').'/docker-compose.override.yml';
 
+        $this->io->write('<fg=gray>Checking override file...</>');
         if (file_exists($override)) {
             $this->io->warning([
                 "Found override file at $override",
@@ -119,6 +137,8 @@ EOD
             ]);
 
             $warnings++;
+        } else {
+            $this->io->write(' ✅'."\n");
         }
 
         return $warnings === 0;

@@ -14,16 +14,18 @@ class ShutdownCmd extends BaseCommand
 
         foreach ($this->configRepo->config->projects as $project) {
             if (!$project->isRunning()) {
-                $this->io->writeln("<fg=gray>Skipping <info>{$project->name}</info>, not currently running</>");
+                $this->io->writeln("<fg=gray>⏭️  Skipping <info>{$project->name}</info>, not currently running</>");
 
                 continue;
             }
 
-            $this->io->writeln("<fg=gray>Stopping <info>{$project->name}</info></>");
+            $this->io->writeln("<fg=gray>⏹️  Stopping <info>{$project->name}</info></>");
 
             Execute::onShell($project->composeCommand('down'));
         }
 
+        $this->io->newLine();
+        $this->io->writeln('<fg=gray>⏹️  Stopping the reverse proxy</>');
         $this->configRepo->caddy->stop();
 
         return Command::SUCCESS;
