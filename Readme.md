@@ -9,6 +9,7 @@ application.
 - [Mailpit for local emails](#mailpit)
 - [Docker compose commands](#docker-compose-commands)
 - [Project fields](#project)
+- [Development](#development)
 
 ### Installation
 
@@ -135,3 +136,23 @@ A new project is registered using the `init` command.
 - **httpContainer**: name of the http container, where caddy should forward the requests
 - **phpContainer**: name of the php container, where the utility commands should be run.
 
+### Development
+
+Skipper leverages strongly the Symfony [console](https://symfony.com/doc/current/components/console.html)
+and [process](https://symfony.com/doc/current/components/process.html) components.
+
+If you are developing skipper and you need to test your edits, you have two choices:
+
+- Run the `bin/skipper` binary directly (e.g. `bin/skipper list`)
+- Update your global composer.json file with a reference to the local project:
+
+```
+"repositories": [
+    {
+        "type": "path",
+        "url": "path/to/your/local/project"
+    }
+],
+```
+
+Now running `composer global require tiknil/skipper` your local version will be used instead of the published version.
