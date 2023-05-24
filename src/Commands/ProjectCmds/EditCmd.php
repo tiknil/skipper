@@ -32,6 +32,8 @@ class EditCmd extends BaseCommand
             return Command::SUCCESS;
         }
 
+        $hostAlias = $this->validateHostAliases();
+
         $composeFile = $this->validateComposeFile();
         if (empty($composeFile)) {
             return Command::SUCCESS;
@@ -45,6 +47,7 @@ class EditCmd extends BaseCommand
             path: $this->project->path,
             name: $name,
             host: $host,
+            hostAlias: $hostAlias,
             composeFile: $composeFile,
             envFile: $envFile,
             httpContainer: $httpContainer,
@@ -141,6 +144,31 @@ class EditCmd extends BaseCommand
         }
 
         return $host;
+    }
+
+    private function validateHostAliases(): array
+    {
+        $hostAliases = $this->io->ask('Host aliases (do not include http/https). Separate each host with a space', implode(' ', $this->project->hostAlias));
+
+        $hostAliases = explode(' ', trim($hostAliases));
+
+        foreach ($hostAliases as $hostAlias) {
+            if (str_starts_with($hostAlias, 'http')) {
+                $this->io->error([
+                    'Alias should not contain protocol http',
+                    $hostAlias,
+                ]);
+
+                return [];
+            }
+        }
+
+        if (!empty($hostAliases)) {
+            $this->io->writeln('<comment>Be sure not to use as alias a host already in use by a different project</comment>');
+            $this->io->writeln('<comment>You need to manually add the aliases to the host file using command <info>skipper host [alias]</info></comment>');
+        }
+
+        return $hostAliases;
     }
 
     private function validateComposeFile(): string|null

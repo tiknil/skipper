@@ -154,7 +154,7 @@ class HostFile
 
     private function writeFile(array $lines): int
     {
-        $this->io->writeln('We need <info>sudo</info> permissions to create a backup copy of your hosts file and to remove the host');
+        $this->io->writeln('We need <info>sudo</info> permissions to create a backup copy of your hosts file');
         $this->io->writeln('🔐 You may be prompted for your password');
 
         if (Execute::onShell(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {

@@ -40,6 +40,7 @@ class Proxy
 EOD;
 
         foreach ($config->projects as $project) {
+
             $fileContent .= <<<EOD
 
 {$project->host}:443 {
@@ -50,6 +51,18 @@ EOD;
 }
 
 EOD;
+            foreach ($project->hostAlias as $alias) {
+                $fileContent .= <<<EOD
+
+{$alias}:443 {
+  encode gzip
+  reverse_proxy {$project->name}-{$project->httpContainer}-1:80 {
+       header_up X-Real-IP {remote_host}
+  }
+}
+
+EOD;
+            }
         }
 
         file_put_contents($this->caddyfilePath(), $fileContent);
