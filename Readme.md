@@ -10,6 +10,7 @@ application.
 - [Docker compose commands](#docker-compose-commands)
 - [Project fields](#project)
 - [Development](#development)
+- [Troubleshooting](#troubleshooting)
 
 ### Installation
 
@@ -156,3 +157,46 @@ If you are developing skipper and you need to test your edits, you have two choi
 ```
 
 Now running `composer global require tiknil/skipper` your local version will be used instead of the published version.
+
+### Troubleshooting
+
+#### Invalid SSL certificates on a new project
+
+In case of ssl errors after launching a new project, you probably need to install the Caddy root certificate into your
+system.
+
+```bash
+skipper proxy:certs
+```
+
+Note that the browser may cache the ssl error, you may need to wait a while after installing the certificate for the
+browser to stop showing warnings
+
+#### Invalid SSL certificates on a running project (INVALID_DATE)
+
+In case ssl errors start occurring after the project is running for a while, it is probably caused by
+a [time drift](https://github.com/docker/for-mac/issues/1260) between your PC datetime and the container internal clock.
+You can reload the caddy container to resolve:
+
+```bash
+skipper proxy:reload
+```
+
+#### command not found: skipper
+
+If your shell does not find the skipper command after the [global installation with composer](#installation), you
+probably do not have the composer `bin` directory into your `$PATH`.
+
+Add the following line to your `~/.zshrc`:
+
+```
+export PATH=$PATH:$HOME/.composer/vendor/bin
+```
+
+Then reload the file:
+
+```bash
+source ~/.zshrc
+```
+
+> If you are not using zsh as your shell, refer to your preferred shell configuration file instead of ~/.zshrc
