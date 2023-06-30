@@ -25,7 +25,7 @@ class TinkerCmd extends BaseCommand
             'tinker',
         ];
 
-        return Execute::onShell($cmd);
+        return Execute::onTty($cmd);
 
     }
 }

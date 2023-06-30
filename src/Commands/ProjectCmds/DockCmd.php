@@ -20,7 +20,7 @@ class DockCmd extends BaseCommand
             'down',
         ];
 
-        $result = Execute::onShell($cmd);
+        $result = Execute::onTty($cmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->writeln('⏹️  Use command <info>skipper caddy stop</info> to stop the reverse proxy');

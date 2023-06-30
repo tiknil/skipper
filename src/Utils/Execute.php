@@ -6,7 +6,7 @@ use Symfony\Component\Process\Process;
 
 class Execute
 {
-    public static function onShell(array $cmd, bool $log = true): int
+    public static function onTty(array $cmd, bool $log = true): int
     {
         if ($log) {
             self::logCmd($cmd);

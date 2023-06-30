@@ -50,7 +50,7 @@ class CertsCmd extends BaseCommand
         $cmd[] = '/Library/Keychains/System.keychain';
         $cmd[] = $caddy->certPath();
 
-        $result = Execute::onShell($cmd);
+        $result = Execute::onTty($cmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->success('✅ Cert installed correctly');

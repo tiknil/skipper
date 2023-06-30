@@ -13,6 +13,6 @@ class ShowCmd extends BaseCommand
     {
         $caddy = $this->configRepo->caddy;
 
-        return Execute::onShell(['less', $caddy->caddyfilePath()]);
+        return Execute::onTty(['less', $caddy->caddyfilePath()]);
     }
 }

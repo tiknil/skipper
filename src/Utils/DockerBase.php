@@ -43,7 +43,7 @@ class DockerBase
             }
         }
 
-        $result = Execute::onShell(['git', 'clone', $this->config->dockerBaseUrl, $filePath]);
+        $result = Execute::onTty(['git', 'clone', $this->config->dockerBaseUrl, $filePath]);
 
         if ($result !== Command::SUCCESS) {
             return;

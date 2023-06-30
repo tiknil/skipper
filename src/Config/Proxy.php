@@ -77,7 +77,7 @@ EOD;
             '--remove-orphans',
         ];
 
-        return Execute::onShell($cmd);
+        return Execute::onTty($cmd);
     }
 
     public function reload(): int
@@ -88,7 +88,7 @@ EOD;
             'caddy',
         ];
 
-        return Execute::onShell($cmd);
+        return Execute::onTty($cmd);
     }
 
     public function stop(): int
@@ -98,7 +98,7 @@ EOD;
             'down',
         ];
 
-        return Execute::onShell($cmd);
+        return Execute::onTty($cmd);
     }
 
     public function certPath(): string

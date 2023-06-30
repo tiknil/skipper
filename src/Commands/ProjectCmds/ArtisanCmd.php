@@ -32,7 +32,7 @@ class ArtisanCmd extends BaseCommand
         array_shift($argv);
         array_shift($argv);
 
-        return Execute::onShell([
+        return Execute::onTty([
             ...$this->project->baseCommand(),
             'exec',
             $this->project->phpContainer,

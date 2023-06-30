@@ -62,7 +62,7 @@ class SailCmd extends BaseCommand
             $cmd[] = '--build';
         }
 
-        $result = Execute::onShell($cmd);
+        $result = Execute::onTty($cmd);
 
         if ($result === Command::FAILURE) {
             return Command::FAILURE;

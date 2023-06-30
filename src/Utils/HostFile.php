@@ -157,7 +157,7 @@ class HostFile
         $this->io->writeln('We need <info>sudo</info> permissions to create a backup copy of your hosts file');
         $this->io->writeln('🔐 You may be prompted for your password');
 
-        if (Execute::onShell(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {
+        if (Execute::onTty(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {
             $this->io->error('Error creating hosts backup file.');
 
             return false;

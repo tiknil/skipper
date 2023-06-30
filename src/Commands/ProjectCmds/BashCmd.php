@@ -23,7 +23,7 @@ class BashCmd extends BaseCommand
             'bash',
         ];
 
-        return Execute::onShell($cmd);
+        return Execute::onTty($cmd);
 
     }
 }

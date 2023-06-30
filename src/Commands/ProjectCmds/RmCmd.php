@@ -16,7 +16,7 @@ class RmCmd extends BaseCommand
 
     protected function handle(): int
     {
-        Execute::onShell($this->project->composeCommand('down'));
+        Execute::onTty($this->project->composeCommand('down'));
 
         $this->io->definitionList(...$this->project->definitionList());
 
@@ -27,7 +27,7 @@ class RmCmd extends BaseCommand
             return Command::SUCCESS;
         }
 
-        Execute::onShell($this->project->composeCommand('rm'));
+        Execute::onTty($this->project->composeCommand('rm'));
 
         unset($this->configRepo->config->projects[$this->project->name]);
         $this->configRepo->updateConfig();

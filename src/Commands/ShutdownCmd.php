@@ -21,7 +21,7 @@ class ShutdownCmd extends BaseCommand
 
             $this->io->writeln("<fg=gray>⏹️  Stopping <info>{$project->name}</info></>");
 
-            Execute::onShell($project->composeCommand('down'));
+            Execute::onTty($project->composeCommand('down'));
         }
 
         $this->io->newLine();

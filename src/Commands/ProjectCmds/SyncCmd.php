@@ -16,7 +16,7 @@ class SyncCmd extends BaseCommand
     protected function handle(): int
     {
         $this->io->writeln('<fg=bright-blue>Install composer dependencies</>');
-        Execute::onShell($this->project->composeCommand([
+        Execute::onTty($this->project->composeCommand([
             'exec',
             $this->project->phpContainer,
             'composer',
@@ -26,7 +26,7 @@ class SyncCmd extends BaseCommand
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Migrate database</>');
 
-        Execute::onShell($this->project->composeCommand([
+        Execute::onTty($this->project->composeCommand([
             'exec',
             $this->project->phpContainer,
             'php',
@@ -39,12 +39,12 @@ class SyncCmd extends BaseCommand
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Install js dependencies</>');
 
-        Execute::onShell(['yarn', 'install']);
+        Execute::onTty(['yarn', 'install']);
 
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Build frontend files</>');
 
-        Execute::onShell(['yarn', 'build']);
+        Execute::onTty(['yarn', 'build']);
 
         return Command::SUCCESS;
     }

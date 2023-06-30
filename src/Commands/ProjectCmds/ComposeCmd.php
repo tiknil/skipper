@@ -29,7 +29,7 @@ class ComposeCmd extends BaseCommand
         array_shift($argv);
         array_shift($argv);
 
-        return Execute::onShell([...$this->project->baseCommand(), ...$argv]);
+        return Execute::onTty([...$this->project->baseCommand(), ...$argv]);
 
     }
 }
