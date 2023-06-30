@@ -6,8 +6,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\InputStream;
-use Symfony\Component\Process\Process;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
 use Tiknil\Skipper\Utils\Execute;
@@ -110,49 +108,11 @@ class RestoreCmd extends BaseCommand
             return Command::SUCCESS;
         }
 
-        Execute::logCmd(['gunzip', '<', $file, '|', ...$mysqlCmd]);
+        $fullCmd = ['gunzip', '<', $file, '|', ...$mysqlCmd];
 
-        try {
-            $fileStream = fopen($file, 'r');
+        $result = Execute::onShellCli($fullCmd);
 
-            $sqlStream = new InputStream();
-
-            $gunzipProc = new Process(['gunzip']);
-            $gunzipProc->setInput($fileStream);
-
-            $process = new Process($mysqlCmd);
-            $process->setInput($sqlStream);
-
-            $gunzipProc->start(function ($type, $buffer) use ($sqlStream) {
-                if (Process::ERR === $type) {
-                    $this->output->write($buffer);
-                } else {
-                    $sqlStream->write($buffer);
-                }
-            });
-            $process->start(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    $this->output->write($buffer);
-                } else {
-                    $this->output->write($buffer);
-                }
-            });
-
-            $gunResult = $gunzipProc->wait();
-
-            // Close streams or the process remains pending
-            fclose($fileStream);
-            $sqlStream->close();
-
-            $result = $process->wait();
-        } catch (\Exception $e) {
-            $this->io->error($e->getMessage());
-
-            $gunResult = Command::FAILURE;
-            $result = Command::FAILURE;
-        }
-
-        if ($gunResult === Command::SUCCESS && $result === Command::SUCCESS) {
+        if ($result === Command::SUCCESS) {
             $this->io->success("✅ Backup $file restored successfully");
         } else {
             $this->io->error('An error occurred');
@@ -160,7 +120,7 @@ class RestoreCmd extends BaseCommand
             $this->io->text('Try running directly the full command you find above, it may work in case of an internal skipper php problem');
         }
 
-        return $gunResult === Command::SUCCESS && $result === Command::SUCCESS;
+        return $result;
 
     }
 }

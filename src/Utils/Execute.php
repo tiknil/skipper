@@ -23,6 +23,22 @@ class Execute
         return $result;
     }
 
+    public static function onShellCli(array $cmd, bool $log = true): int
+    {
+        if ($log) {
+            self::logCmd($cmd);
+        }
+
+        $process = Process::fromShellCommandline(implode(' ', $cmd));
+        $process->setTimeout(0);
+
+        $result = $process->run();
+
+        Globals::$output->writeln('');
+
+        return $result;
+    }
+
     public static function onOutput(array $cmd, bool $log = true): int
     {
         if ($log) {

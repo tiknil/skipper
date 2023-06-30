@@ -6,8 +6,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\InputStream;
-use Symfony\Component\Process\Process;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
 use Tiknil\Skipper\Utils\Execute;
@@ -88,47 +86,15 @@ class BackupCmd extends BaseCommand
             '--no-tablespaces',
         ];
 
-        Execute::logCmd([...$dumpCmd, '|', 'gzip', '>', $outputFile]);
-
         if (!file_exists(dirname($outputFile))) {
             mkdir(dirname($outputFile), 0777, true);
         }
 
-        $fileStream = fopen($outputFile, 'w');
+        $fullCmd = [...$dumpCmd, '|', 'gzip', '>', $outputFile];
 
-        // Se il file va compressato, serve una fase intermedi
-        $sqlOutput = new InputStream();
+        $result = Execute::onShellCli($fullCmd);
 
-        $gzipProcess = new Process(['gzip']);
-        $gzipProcess->setInput($sqlOutput);
-
-        $dumpProcess = new Process($dumpCmd);
-        $dumpProcess->start(function ($type, $buffer) use ($sqlOutput) {
-            if (Process::ERR === $type) {
-                $this->output->write($buffer);
-            } else {
-                $sqlOutput->write($buffer);
-            }
-        });
-
-        $gzipProcess->start(function ($type, $buffer) use ($fileStream) {
-            if (Process::ERR === $type) {
-                $this->output->write($buffer);
-            } else {
-                fwrite($fileStream, $buffer);
-            }
-        });
-
-        $dumpResult = $dumpProcess->wait();
-
-        $sqlOutput->close();
-        $gzipResult = $gzipProcess->wait();
-
-        $dumpResult = $gzipResult === Command::SUCCESS ? $dumpResult : Command::FAILURE;
-
-        fclose($fileStream);
-
-        if ($dumpResult === Command::SUCCESS) {
+        if ($result === Command::SUCCESS) {
             $this->io->writeln('✅ <info>Backup created successfully</info>');
             $this->io->writeln("📦 $outputFile");
         }
@@ -142,7 +108,7 @@ class BackupCmd extends BaseCommand
         $this->io->newLine();
         $this->io->writeln("Use <info>skipper restore --file $outputFile</info> to restore");
 
-        return $dumpResult;
+        return $result;
 
     }
 
