@@ -4,6 +4,13 @@ All notable changes to `skipper` will be documented in this file.
 
 The skipper release archive can be found on [the github repo](https://github.com/tiknil/skipper/releases)
 
+## 0.2.2 - 2024-03-15
+
+**Features**
+
+- Feature: `mysql` command: Start a MySQL shell
+- Feature: `ide-helper` command: Perform default ide-helper command for laravel models
+
 ## 0.2.1 - 2023-06-30
 
 **Bugfixes**
