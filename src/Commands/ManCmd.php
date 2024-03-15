@@ -73,6 +73,8 @@ class ManCmd extends BaseCommand
             ['sync' => 'Update dependencies, do migrations and sync your project'],
             ['backup' => 'Create a new MySQL backup'],
             ['restore' => 'Restore a MySQL backup'],
+            ['mysql' => 'Start a MySQL shell'],
+            ['ide-helper' => 'Perform default ide-helper command for laravel models'],
         );
 
         $this->io->writeln('📖 Refer to <comment>https://github.com/tiknil/skipper</comment> for additional documentation');

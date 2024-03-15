@@ -15,7 +15,9 @@ use Tiknil\Skipper\Commands\ProjectCmds\ComposerCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\DockCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\DockerBaseCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\EditCmd;
+use Tiknil\Skipper\Commands\ProjectCmds\IdeHelperCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\InfoCmd;
+use Tiknil\Skipper\Commands\ProjectCmds\MysqlCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\RestoreCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\RmCmd;
 use Tiknil\Skipper\Commands\ProjectCmds\SailCmd;
@@ -59,6 +61,8 @@ class CliApplication extends \Symfony\Component\Console\Application
         $this->add(new BackupCmd());
         $this->add(new RestoreCmd());
         $this->add(new SyncCmd());
+        $this->add(new MysqlCmd());
+        $this->add(new IdeHelperCmd());
 
         // Caddy
         $this->add(new CertsCmd());
