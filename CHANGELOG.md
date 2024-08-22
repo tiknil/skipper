@@ -4,6 +4,12 @@ All notable changes to `skipper` will be documented in this file.
 
 The skipper release archive can be found on [the github repo](https://github.com/tiknil/skipper/releases)
 
+## 0.2.3 - 2024-08-22
+
+**Chores**
+
+- Chore: Removed version from docker-compose proxy file, now deprecated
+
 ## 0.2.2 - 2024-03-15
 
 **Features**
