@@ -2,13 +2,11 @@
 
 namespace Tiknil\Skipper\Config;
 
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 class Proxy
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function check(): bool
     {
@@ -21,7 +19,7 @@ class Proxy
             mkdir($this->proxyDir(), 0777, true);
         }
 
-        Execute::hideOutput([
+        ShellCommand::new()->showOutput(false)->run([
             'cp',
             '-r',
             path('proxy/'), // Keep the trailing /
@@ -77,7 +75,7 @@ EOD;
             '--remove-orphans',
         ];
 
-        return Execute::onTty($cmd);
+        return ShellCommand::new()->useTty()->run($cmd);
     }
 
     public function reload(): int
@@ -88,7 +86,7 @@ EOD;
             'caddy',
         ];
 
-        return Execute::onTty($cmd);
+        return ShellCommand::new()->useTty()->run($cmd);
     }
 
     public function stop(): int
@@ -98,7 +96,7 @@ EOD;
             'down',
         ];
 
-        return Execute::onTty($cmd);
+        return ShellCommand::new()->useTty()->run($cmd);
     }
 
     public function certPath(): string

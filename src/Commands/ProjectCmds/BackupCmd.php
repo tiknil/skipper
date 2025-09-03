@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'backup', description: 'Create a new MySQL backup')]
 class BackupCmd extends BaseCommand
@@ -92,7 +92,7 @@ class BackupCmd extends BaseCommand
 
         $fullCmd = [...$dumpCmd, '|', 'gzip', '>', $outputFile];
 
-        $result = Execute::onShellCli($fullCmd);
+        $result = ShellCommand::new()->useShellIntegration()->run($fullCmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->writeln('✅ <info>Backup created successfully</info>');

@@ -6,8 +6,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
 use Tiknil\Skipper\Utils\HostFile;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'rm', description: 'Removes the skipper project')]
 class RmCmd extends BaseCommand
@@ -16,7 +16,7 @@ class RmCmd extends BaseCommand
 
     protected function handle(): int
     {
-        Execute::onTty($this->project->composeCommand('down'));
+        ShellCommand::new()->useTty()->run($this->project->composeCommand('down'));
 
         $this->io->definitionList(...$this->project->definitionList());
 
@@ -27,7 +27,7 @@ class RmCmd extends BaseCommand
             return Command::SUCCESS;
         }
 
-        Execute::onTty($this->project->composeCommand('rm'));
+        ShellCommand::new()->useTty()->run($this->project->composeCommand('rm'));
 
         unset($this->configRepo->config->projects[$this->project->name]);
         $this->configRepo->updateConfig();

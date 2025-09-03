@@ -6,7 +6,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'sync', description: 'Sync your project by updating dependencies, doing migrations etc')]
 class SyncCmd extends BaseCommand
@@ -16,7 +16,7 @@ class SyncCmd extends BaseCommand
     protected function handle(): int
     {
         $this->io->writeln('<fg=bright-blue>Install composer dependencies</>');
-        Execute::onTty($this->project->composeCommand([
+        ShellCommand::new()->useTty()->run($this->project->composeCommand([
             'exec',
             $this->project->phpContainer,
             'composer',
@@ -26,7 +26,7 @@ class SyncCmd extends BaseCommand
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Migrate database</>');
 
-        Execute::onTty($this->project->composeCommand([
+        ShellCommand::new()->useTty()->run($this->project->composeCommand([
             'exec',
             $this->project->phpContainer,
             'php',
@@ -34,17 +34,17 @@ class SyncCmd extends BaseCommand
             'migrate',
         ]));
 
-        Execute::hideOutput(['cd', $this->project->path], false);
+        ShellCommand::new()->showOutput(false)->showLog(false)->run(['cd', $this->project->path]);
 
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Install js dependencies</>');
 
-        Execute::onTty(['yarn', 'install']);
+        ShellCommand::new()->useTty()->run(['yarn', 'install']);
 
         $this->io->writeln('-------------------');
         $this->io->writeln('<fg=bright-blue>Build frontend files</>');
 
-        Execute::onTty(['yarn', 'build']);
+        ShellCommand::new()->useTty()->run(['yarn', 'build']);
 
         return Command::SUCCESS;
     }

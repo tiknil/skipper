@@ -5,7 +5,7 @@ namespace Tiknil\Skipper\Commands\ProxyCmd;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Tiknil\Skipper\Commands\BaseCommand;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'proxy:certs', description: 'Install proxy local root certificate')]
 class CertsCmd extends BaseCommand
@@ -50,7 +50,7 @@ class CertsCmd extends BaseCommand
         $cmd[] = '/Library/Keychains/System.keychain';
         $cmd[] = $caddy->certPath();
 
-        $result = Execute::onTty($cmd);
+        $result = ShellCommand::new()->useTty()->run($cmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->success('✅ Cert installed correctly');

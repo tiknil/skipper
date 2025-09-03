@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'mysql', description: 'Start a mysql shell')]
 class MysqlCmd extends BaseCommand
@@ -63,7 +63,7 @@ class MysqlCmd extends BaseCommand
             '-p'.$dbPsw,
         ];
 
-        return Execute::onTty($cmd);
+        return ShellCommand::new()->useTty()->run($cmd);
 
     }
 }

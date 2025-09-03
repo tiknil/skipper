@@ -35,7 +35,7 @@ class DockerBase
 
             if ($this->io->confirm('Proceed anyway?')) {
 
-                Execute::onOutput(['rm', '-r', $filePath]);
+                ShellCommand::new()->run(['rm', '-r', $filePath]);
             } else {
                 $this->io->writeln('Operation canceled. The base docker configuration will <info>not</info> be installed');
 
@@ -43,14 +43,14 @@ class DockerBase
             }
         }
 
-        $result = Execute::onTty(['git', 'clone', $this->config->dockerBaseUrl, $filePath]);
+        $result = ShellCommand::new()->useTty()->run(['git', 'clone', $this->config->dockerBaseUrl, $filePath]);
 
         if ($result !== Command::SUCCESS) {
             return;
         }
 
-        Execute::onOutput(['cp', $filePath.'/.env.base', $filePath.'/.env']);
+        ShellCommand::new()->run(['cp', $filePath.'/.env.base', $filePath.'/.env']);
 
-        Execute::onOutput(['rm', '-rf', $filePath.'/.git', $filePath.'/.env.base']);
+        ShellCommand::new()->run(['rm', '-rf', $filePath.'/.git', $filePath.'/.env.base']);
     }
 }

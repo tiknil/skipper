@@ -5,7 +5,7 @@ namespace Tiknil\Skipper\Commands\ProjectCmds;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'bash', description: 'Open a bash session inside the php-fpm container')]
 class BashCmd extends BaseCommand
@@ -23,7 +23,7 @@ class BashCmd extends BaseCommand
             'bash',
         ];
 
-        return Execute::onTty($cmd);
-
+        return ShellCommand::new()->useTty()
+            ->run($cmd);
     }
 }

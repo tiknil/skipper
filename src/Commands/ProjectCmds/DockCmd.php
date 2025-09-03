@@ -6,7 +6,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'dock', description: 'Stop the project containers', aliases: ['stop', 'down'])]
 class DockCmd extends BaseCommand
@@ -20,7 +20,7 @@ class DockCmd extends BaseCommand
             'down',
         ];
 
-        $result = Execute::onTty($cmd);
+        $result = ShellCommand::new()->useTty()->run($cmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->writeln('⏹️  Use command <info>skipper caddy stop</info> to stop the reverse proxy');

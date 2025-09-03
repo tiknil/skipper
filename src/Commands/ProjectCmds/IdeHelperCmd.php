@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'ide-helper', description: 'Create laravel models definitions for the IDE')]
 class IdeHelperCmd extends BaseCommand
@@ -53,7 +53,7 @@ class IdeHelperCmd extends BaseCommand
             '-R',                    // Reset, remove previous phpdocs to avoid duplicates
         ];
 
-        $result = Execute::onOutput($ideHelperCmd);
+        $result = ShellCommand::new()->run($ideHelperCmd);
 
         if ($result !== self::SUCCESS) {
             return $result;
@@ -71,6 +71,6 @@ class IdeHelperCmd extends BaseCommand
             $folder,
         ];
 
-        return Execute::onOutput($pintCmd);
+        return ShellCommand::new()->run($pintCmd);
     }
 }

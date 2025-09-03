@@ -137,7 +137,7 @@ class HostFile
         return $lines;
     }
 
-    private function findHostLine(array $lines): int|null
+    private function findHostLine(array $lines): ?int
     {
         foreach ($lines as $i => $line) {
             if (str_starts_with($line, '#')) {
@@ -157,7 +157,7 @@ class HostFile
         $this->io->writeln('We need <info>sudo</info> permissions to create a backup copy of your hosts file');
         $this->io->writeln('🔐 You may be prompted for your password');
 
-        if (Execute::onTty(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {
+        if (ShellCommand::new()->useTty()->run(['sudo', 'cp', '/etc/hosts', '/etc/hosts.bkp'], false) !== Command::SUCCESS) {
             $this->io->error('Error creating hosts backup file.');
 
             return false;
@@ -165,7 +165,7 @@ class HostFile
 
         $this->io->writeln('📦 Backup file <comment>/etc/hosts.bkp</comment> created successfully');
 
-        $inputStream = new InputStream();
+        $inputStream = new InputStream;
 
         $process = new Process(['sudo', 'tee', '/etc/hosts']);
         $process->setInput($inputStream);

@@ -8,8 +8,8 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
 use Tiknil\Skipper\Utils\HostFile;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'sail', description: 'Start the project')]
 class SailCmd extends BaseCommand
@@ -62,7 +62,7 @@ class SailCmd extends BaseCommand
             $cmd[] = '--build';
         }
 
-        $result = Execute::onTty($cmd);
+        $result = ShellCommand::new()->useTty()->run($cmd);
 
         if ($result === Command::FAILURE) {
             return Command::FAILURE;

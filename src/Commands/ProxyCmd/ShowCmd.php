@@ -4,7 +4,7 @@ namespace Tiknil\Skipper\Commands\ProxyCmd;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Tiknil\Skipper\Commands\BaseCommand;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'proxy:show', description: 'Print the current Caddyfile configuration')]
 class ShowCmd extends BaseCommand
@@ -13,6 +13,6 @@ class ShowCmd extends BaseCommand
     {
         $caddy = $this->configRepo->caddy;
 
-        return Execute::onTty(['less', $caddy->caddyfilePath()]);
+        return ShellCommand::new()->useTty()->run(['less', $caddy->caddyfilePath()]);
     }
 }

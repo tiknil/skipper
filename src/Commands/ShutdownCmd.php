@@ -4,7 +4,7 @@ namespace Tiknil\Skipper\Commands;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'shutdown', description: 'Stops all skipper projects and the reverse proxy', aliases: ['shut'])]
 class ShutdownCmd extends BaseCommand
@@ -21,7 +21,7 @@ class ShutdownCmd extends BaseCommand
 
             $this->io->writeln("<fg=gray>⏹️  Stopping <info>{$project->name}</info></>");
 
-            Execute::onTty($project->composeCommand('down'));
+            ShellCommand::new()->useTty()->run($project->composeCommand('down'));
         }
 
         $this->io->newLine();

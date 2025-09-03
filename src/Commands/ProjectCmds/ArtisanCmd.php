@@ -6,7 +6,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'artisan', aliases: ['art'], description: 'Run an artisan command')]
 class ArtisanCmd extends BaseCommand
@@ -32,7 +32,7 @@ class ArtisanCmd extends BaseCommand
         array_shift($argv);
         array_shift($argv);
 
-        return Execute::onTty([
+        return ShellCommand::new()->useTty()->run([
             ...$this->project->baseCommand(),
             'exec',
             $this->project->phpContainer,

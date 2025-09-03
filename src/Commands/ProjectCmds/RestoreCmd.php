@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Tiknil\Skipper\Commands\BaseCommand;
 use Tiknil\Skipper\Commands\WithProject;
-use Tiknil\Skipper\Utils\Execute;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 #[AsCommand(name: 'restore', description: 'Restore a MySQL backup')]
 class RestoreCmd extends BaseCommand
@@ -110,7 +110,7 @@ class RestoreCmd extends BaseCommand
 
         $fullCmd = ['gunzip', '<', $file, '|', ...$mysqlCmd];
 
-        $result = Execute::onShellCli($fullCmd);
+        $result = ShellCommand::new()->useShellIntegration()->run($fullCmd);
 
         if ($result === Command::SUCCESS) {
             $this->io->success("✅ Backup $file restored successfully");
