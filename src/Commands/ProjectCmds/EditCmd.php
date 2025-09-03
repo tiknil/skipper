@@ -64,15 +64,7 @@ class EditCmd extends BaseCommand
             return Command::SUCCESS;
         }
 
-        if ($name !== $this->project->name) {
-            unset($this->configRepo->config->projects[$this->project->name]);
-        }
-
-        $this->configRepo->config->projects[$updatedProj->name] = $updatedProj;
-        $this->configRepo->updateConfig();
-
-        $this->configRepo->caddy->writeCaddyfile($this->configRepo->config);
-        $this->configRepo->caddy->reload();
+        $this->configRepo->updateProject($updatedProj, $this->project->name);
 
         $this->io->success('Project updated successfully');
 
@@ -90,7 +82,7 @@ class EditCmd extends BaseCommand
         return Command::SUCCESS;
     }
 
-    private function validateName(): string|null
+    private function validateName(): ?string
     {
         $name = $this->io->ask('Project name', $this->project->name);
 
@@ -121,7 +113,7 @@ class EditCmd extends BaseCommand
         return $name;
     }
 
-    private function validateHost(): string|null
+    private function validateHost(): ?string
     {
         $host = $this->io->ask('Project Host (do not include http/https)', $this->project->host);
 
@@ -171,7 +163,7 @@ class EditCmd extends BaseCommand
         return $hostAliases;
     }
 
-    private function validateComposeFile(): string|null
+    private function validateComposeFile(): ?string
     {
         $composeFile = $this->io->ask('Relative path to the docker-compose file', $this->project->composeFile);
 

@@ -24,7 +24,7 @@ class Repository
 
             Globals::$io->infoText('Skipper configuration file not found. Creating now');
 
-            $this->config = new Config();
+            $this->config = new Config;
             $this->updateConfig();
 
             Globals::$io->infoText('Configuration file created at '.$this->filePath());
@@ -35,7 +35,7 @@ class Repository
             try {
                 $data = Yaml::parseFile($this->filePath());
 
-                $config = new Config();
+                $config = new Config;
 
                 if (is_array($data['projects'] ?? false)) {
 
@@ -70,7 +70,7 @@ class Repository
 
     private function loadCaddy(): Proxy
     {
-        $caddy = new Proxy();
+        $caddy = new Proxy;
 
         if (!$caddy->check()) {
             Globals::$io->info('Caddy files are missing. Setting them up now');
@@ -84,6 +84,20 @@ class Repository
         }
 
         return $caddy;
+    }
+
+    public function updateProject(Project $project, string $fromName): void
+    {
+        if ($fromName !== $project->name) {
+            unset($this->config->projects[$fromName]);
+        }
+
+        $this->config->projects[$project->name] = $project;
+
+        $this->updateConfig();
+
+        $this->caddy->writeCaddyfile($this->config);
+        $this->caddy->reload();
     }
 
     public function updateConfig(): void
