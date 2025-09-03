@@ -2,8 +2,11 @@
 
 namespace Tiknil\Skipper\Commands;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Yaml\Yaml;
+use Tiknil\Skipper\Commands\ProjectCmds\SailCmd;
 use Tiknil\Skipper\Config\Project;
+use Tiknil\Skipper\Utils\ShellCommand;
 
 trait WithProject
 {
@@ -20,18 +23,44 @@ trait WithProject
     {
         $project = $this->configRepo->config->projectByPath(getcwd(), $this->recursive);
 
-        if (empty($project)) {
-            $this->io->warning([
-                'Invalid path',
-                'The current path does not belong to a valid skipper project',
-            ]);
+        if (!empty($project)) {
+            $this->project = $project;
 
+            return;
+        }
+
+        $this->io->warning([
+            'Invalid path',
+            'The current path does not belong to a valid skipper project',
+        ]);
+
+        if (!is_a($this, SailCmd::class)) {
             $this->io->writeln('Use command <info>init</info> to create a new skipper project for this path');
 
             exit();
         }
 
-        $this->project = $project;
+        $confirm = $this->io->confirm('Do you want to initialize a new skipper project here?');
+
+        if (!$confirm) {
+            $this->io->writeln('Use command <info>init</info> to create a new skipper project for this path');
+
+            exit();
+        }
+
+        // run init command - using full path to avoid recursion
+        $projectPath = realpath($_SERVER['PHP_SELF']);
+        $result = ShellCommand::new()->useTty()->run([$projectPath, 'init']);
+
+        if ($result === Command::SUCCESS) {
+            return;
+        }
+
+        $this->io->error('Project initialization failed');
+        $this->io->writeln('Use command <info>init</info> to create a new skipper project for this path');
+
+        exit();
+
     }
 
     protected function checkComposeFile(): bool
