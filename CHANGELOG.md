@@ -4,6 +4,19 @@ All notable changes to `skipper` will be documented in this file.
 
 The skipper release archive can be found on [the github repo](https://github.com/tiknil/skipper/releases)
 
+## 0.3.0 - 2025-09-02
+
+**Features**
+
+- Feature: `alias` command: Easily add or remove host aliases
+- Feature: the `sail` command asks to run `init` when used from an unregistred directory
+
+**Chores**
+
+- Chore: Improved development documentation
+- Chore: Copilot instructions setup
+- Chore: Process handling refactored using `ShellCommand`
+
 ## 0.2.3 - 2024-08-22
 
 **Chores**
