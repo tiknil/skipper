@@ -32,7 +32,7 @@ Register the current path as a skipper project:
 
 ```bash
 # No options, sane defaults will be used and you will be asked to confirm the main fields
-skipper init 
+skipper init
 
 # All fields can also be set via command line options
 skipper init --host=[host] --name=[name] \
@@ -47,14 +47,15 @@ You will be asked to automatically install the default
 
 See [Project](#project) for details about each field.
 
-----
+---
+
 Start the project containers
 
 ```bash
 skipper sail
 ```
 
-----
+---
 
 Stops the project containers
 
@@ -62,7 +63,7 @@ Stops the project containers
 skipper dock
 ```
 
-----
+---
 
 Install caddy root certificate
 
@@ -70,7 +71,8 @@ Install caddy root certificate
 skipper proxy:certs
 ```
 
----- 
+---
+
 Once a project is running, skipper provides some useful commands to directly interact with it.
 
 ```bash
@@ -118,7 +120,7 @@ skipper compose [command]
 ```
 
 Basically, replace each `docker-compose [command]` with `skipper compose [command]`.
-This is *required* because skipper attaches some options to the docker-compose command that are required, such as the
+This is _required_ because skipper attaches some options to the docker-compose command that are required, such as the
 name or the env file path.
 
 ### Project
@@ -157,6 +159,8 @@ If you are developing skipper and you need to test your edits, you have two choi
 ```
 
 Now running `composer global require tiknil/skipper` your local version will be used instead of the published version.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for additional technical informations.
 
 ### Troubleshooting
 

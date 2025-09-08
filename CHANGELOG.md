@@ -4,6 +4,10 @@ All notable changes to `skipper` will be documented in this file.
 
 The skipper release archive can be found on [the github repo](https://github.com/tiknil/skipper/releases)
 
+## 0.3.1 - 2025-09-00
+
+- Fix: removed timeout for tty and shell commands
+
 ## 0.3.0 - 2025-09-02
 
 **Features**
