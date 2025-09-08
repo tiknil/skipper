@@ -32,7 +32,7 @@ class ComposerCmd extends BaseCommand
         array_shift($argv);
         array_shift($argv);
 
-        return ShellCommand::new()->run([
+        return ShellCommand::new()->useTty()->run([
             ...$this->project->baseCommand(),
             'exec',
             $this->project->phpContainer,

@@ -49,6 +49,8 @@ class ShellCommand
 
         $process->setTty($this->useTty);
 
+        $process->setTimeout($this->getTimeout() ?? 0);
+
         $result = $process->run(function ($type, $buffer) {
             if ($this->showOutput) {
                 echo $buffer;
@@ -94,6 +96,15 @@ class ShellCommand
         $this->showLog = $showLog;
 
         return $this;
+    }
+
+    private function getTimeout(): ?int
+    {
+        if ($this->useTty || $this->useShellIntegration) {
+            return null; // no timeout
+        }
+
+        return 60;
     }
 
     private function log(array $cmd)
